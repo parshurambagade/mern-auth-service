@@ -12,7 +12,7 @@
   },
   "license": "ISC",
   "author": "Parshuram B <parshurambagade855@gmail.com>",
-  "type": "commonjs",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "dev": "node --watch src/server.ts",
@@ -26,6 +26,7 @@
   "devDependencies": {
     "@eslint/js": "^9.39.2",
     "@types/node": "^25.2.0",
+    "dotenv": "^17.2.3",
     "eslint": "^9.39.2",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.7",

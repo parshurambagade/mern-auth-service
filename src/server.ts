@@ -1,9 +1,3 @@
-function welcome(name: string) {
-  const user = {
-    name,
-  };
+import { ENV } from "./config/env.js";
 
-  return user.name;
-}
-
-welcome("Parshuram");
+console.log("Server is starting at port: ", ENV.PORT);
