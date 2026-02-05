@@ -1,5 +1,9 @@
 function welcome(name: string) {
-  console.log(`Welcome ${name} to the world of TypeScript!`);
+  const user = {
+    name,
+  };
+
+  return user.name;
 }
 
 welcome("Parshuram");
