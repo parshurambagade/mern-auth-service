@@ -1,0 +1,25 @@
+{
+  "name": "auth-service",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/parshurambagade/mern-auth-service#readme",
+  "bugs": {
+    "url": "https://github.com/parshurambagade/mern-auth-service/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/parshurambagade/mern-auth-service.git"
+  },
+  "license": "ISC",
+  "author": "Parshuram B <parshurambagade855@gmail.com>",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node --watch src/server.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "@types/node": "^25.2.0",
+    "typescript": "^5.9.3"
+  }
+}
