@@ -16,10 +16,13 @@
   "main": "index.js",
   "scripts": {
     "dev": "node --watch src/server.ts",
+    "format:check": "npx prettier . --check",
+    "format:fix": "npx prettier . --write",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
     "@types/node": "^25.2.0",
+    "prettier": "3.8.1",
     "typescript": "^5.9.3"
   }
 }
