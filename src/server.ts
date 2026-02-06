@@ -1,12 +1,13 @@
 import { ENV } from "./config/env.js";
 import app from "./app.js";
+import logger from "./config/logger.js";
 
 const startServer = () => {
   const PORT = ENV.PORT || 3000;
 
   try {
     app.listen(PORT, () => {
-      console.log(`Server is running on port ${PORT}`);
+      logger.info("Server is running...", { PORT });
     });
   } catch (error) {
     console.error("Error starting the server:", error);
