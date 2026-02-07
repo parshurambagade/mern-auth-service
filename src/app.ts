@@ -5,13 +5,13 @@ import express, {
 } from "express";
 import type { HttpError } from "http-errors";
 import logger from "./config/logger.js";
-import createHttpError from "http-errors";
+// import createHttpError from "http-errors";
 
 const app: express.Application = express();
 
 app.get("/", (req, res) => {
-  const err = createHttpError(401, "Unauthorized Access");
-  throw err;
+  // const err = createHttpError(401, "Unauthorized Access");
+  // throw err;
   res.send("Hello, World!");
 });
 
