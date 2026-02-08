@@ -1,5 +1,5 @@
-import { ENV } from "./config/env.js";
 import app from "./app.js";
+import { ENV } from "./config/env.js";
 import logger from "./config/logger.js";
 
 const startServer = () => {
@@ -7,7 +7,7 @@ const startServer = () => {
 
   try {
     app.listen(PORT, () => {
-      logger.info("Server is running...", { PORT });
+      logger.info("✅ Server is running...", { PORT });
     });
   } catch (error) {
     console.error("Error starting the server:", error);
