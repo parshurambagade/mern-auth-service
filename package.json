@@ -15,7 +15,7 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "dev": "tsx watch src/server.ts",
+    "dev": "cross-env NODE_ENV=dev tsx watch src/server.ts",
     "format:check": "prettier . --check",
     "format:fix": "prettier . --write",
     "lint:check": "eslint .",
@@ -49,6 +49,7 @@
     ]
   },
   "dependencies": {
+    "cross-env": "^10.1.0",
     "express": "^5.2.1",
     "http-errors": "^2.0.1",
     "winston": "^3.19.0"
