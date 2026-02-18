@@ -43,9 +43,9 @@
     "vitest": "^4.0.18"
   },
   "lint-staged": {
-    "*.ts": [
-      "npm run format:fix",
-      "npm run lint:fix"
+    "*.{ts|js|tsx|jsx}": [
+      "prettier --write",
+      "eslint  --fix"
     ]
   },
   "dependencies": {
