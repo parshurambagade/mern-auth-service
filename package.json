@@ -1,62 +1,62 @@
 {
-  "name": "auth-service",
-  "version": "1.0.0",
-  "description": "",
-  "homepage": "https://github.com/parshurambagade/mern-auth-service#readme",
-  "bugs": {
-    "url": "https://github.com/parshurambagade/mern-auth-service/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/parshurambagade/mern-auth-service.git"
-  },
-  "license": "ISC",
-  "author": "Parshuram B <parshurambagade855@gmail.com>",
-  "type": "module",
-  "main": "index.js",
-  "scripts": {
-    "dev": "cross-env NODE_ENV=dev tsx watch src/server.ts",
-    "format:check": "prettier . --check",
-    "format:fix": "prettier . --write",
-    "lint:check": "eslint .",
-    "lint:fix": "eslint . --fix",
-    "test": "vitest",
-    "prepare": "husky"
-  },
-  "devDependencies": {
-    "@eslint/js": "^9.39.2",
-    "@types/express": "^5.0.6",
-    "@types/http-errors": "^2.0.5",
-    "@types/node": "^25.2.0",
-    "@types/pg": "^8.16.0",
-    "@types/supertest": "^6.0.3",
-    "@types/winston": "^2.4.4",
-    "dotenv": "^17.2.3",
-    "eslint": "^9.39.2",
-    "husky": "^9.1.7",
-    "lint-staged": "^16.2.7",
-    "nodemon": "^3.1.11",
-    "prettier": "3.8.1",
-    "prisma": "^7.4.0",
-    "supertest": "^7.2.2",
-    "tsx": "^4.21.0",
-    "typescript": "^5.9.3",
-    "typescript-eslint": "^8.54.0",
-    "vitest": "^4.0.18"
-  },
-  "lint-staged": {
-    "*.{ts|js|tsx|jsx}": [
-      "prettier --write",
-      "eslint  --fix"
-    ]
-  },
-  "dependencies": {
-    "@prisma/adapter-pg": "^7.4.0",
-    "@prisma/client": "^7.4.0",
-    "cross-env": "^10.1.0",
-    "express": "^5.2.1",
-    "http-errors": "^2.0.1",
-    "pg": "^8.18.0",
-    "winston": "^3.19.0"
-  }
+    "name": "auth-service",
+    "version": "1.0.0",
+    "description": "",
+    "homepage": "https://github.com/parshurambagade/mern-auth-service#readme",
+    "bugs": {
+        "url": "https://github.com/parshurambagade/mern-auth-service/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/parshurambagade/mern-auth-service.git"
+    },
+    "license": "ISC",
+    "author": "Parshuram B <parshurambagade855@gmail.com>",
+    "type": "module",
+    "main": "index.js",
+    "scripts": {
+        "dev": "cross-env NODE_ENV=dev tsx watch src/server.ts",
+        "format:check": "prettier . --check",
+        "format:fix": "prettier . --write",
+        "lint:check": "eslint .",
+        "lint:fix": "eslint . --fix",
+        "test": "cross-env NODE_ENV=test vitest",
+        "prepare": "husky"
+    },
+    "devDependencies": {
+        "@eslint/js": "^9.39.2",
+        "@types/express": "^5.0.6",
+        "@types/http-errors": "^2.0.5",
+        "@types/node": "^25.2.0",
+        "@types/pg": "^8.16.0",
+        "@types/supertest": "^6.0.3",
+        "@types/winston": "^2.4.4",
+        "dotenv": "^17.2.3",
+        "eslint": "^9.39.2",
+        "husky": "^9.1.7",
+        "lint-staged": "^16.2.7",
+        "nodemon": "^3.1.11",
+        "prettier": "3.8.1",
+        "prisma": "^7.4.0",
+        "supertest": "^7.2.2",
+        "tsx": "^4.21.0",
+        "typescript": "^5.9.3",
+        "typescript-eslint": "^8.54.0",
+        "vitest": "^4.0.18"
+    },
+    "lint-staged": {
+        "*.{ts|js|tsx|jsx}": [
+            "prettier --write",
+            "eslint  --fix"
+        ]
+    },
+    "dependencies": {
+        "@prisma/adapter-pg": "^7.4.0",
+        "@prisma/client": "^7.4.0",
+        "cross-env": "^10.1.0",
+        "express": "^5.2.1",
+        "http-errors": "^2.0.1",
+        "pg": "^8.18.0",
+        "winston": "^3.19.0"
+    }
 }
