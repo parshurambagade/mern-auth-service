@@ -1,16 +1,13 @@
-import logger from "../config/logger";
-import { prisma } from "../config/prisma";
+import { PrismaClient } from "../../generated/prisma/internal/class";
 import { UserData } from "../types";
 
 export class UserService {
+    constructor(private prisma: PrismaClient) {}
+
     async create(userData: UserData) {
-        try {
-            const user = await prisma.user.create({
-                data: userData,
-            });
-            return user;
-        } catch (err) {
-            logger.error(err);
-        }
+        const user = await this.prisma.user.create({
+            data: userData,
+        });
+        return user;
     }
 }
