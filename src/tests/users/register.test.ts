@@ -101,6 +101,22 @@ describe("POST /auth/register", () => {
             expect(users[0]).toHaveProperty("role");
             expect(users[0].role).toBe(ROLES.CUSTOMER);
         });
+
+        it("should store hashed password", async () => {
+            const userData = {
+                firstName: "Parshuram",
+                lastName: "Bagade",
+                email: "parshuram@gmail.com",
+                password: "Pass@123",
+            };
+
+            await request(app).post("/auth/register").send(userData);
+
+            const users = await prisma.user.findMany();
+            expect(users[0].password).not.toBe(userData.password);
+            expect(users[0].password).toHaveLength(60);
+            expect(users[0].password).toMatch(/\$2b\$\d+\$/); // hashed value starts with $2b$10$
+        });
     });
 
     describe.skip("Some fields missing", () => {});

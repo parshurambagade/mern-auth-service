@@ -3,6 +3,7 @@ import { RegisterRequest } from "../types";
 import { UserService } from "../services/UserService";
 import { Logger } from "winston";
 import { ROLES } from "../constants";
+import bcrypt from "bcryptjs";
 class AuthController {
     constructor(
         private userService: UserService,
@@ -12,11 +13,14 @@ class AuthController {
     async register(req: RegisterRequest, res: Response, next: NextFunction) {
         const { firstName, lastName, email, password } = req.body;
 
+        const saltRounds = 10;
+        const hashedPassword = await bcrypt.hash(password, saltRounds);
+
         const newUser = {
             firstName,
             lastName,
             email,
-            password,
+            password: hashedPassword,
             role: ROLES.CUSTOMER,
         };
         this.logger.debug("Request body contains: ", {
