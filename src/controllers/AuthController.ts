@@ -2,6 +2,7 @@ import { NextFunction, Response } from "express";
 import { RegisterRequest } from "../types";
 import { UserService } from "../services/UserService";
 import { Logger } from "winston";
+import { ROLES } from "../constants";
 class AuthController {
     constructor(
         private userService: UserService,
@@ -16,8 +17,12 @@ class AuthController {
             lastName,
             email,
             password,
+            role: ROLES.CUSTOMER,
         };
-        this.logger.debug("Request body has: ", newUser);
+        this.logger.debug("Request body contains: ", {
+            ...newUser,
+            password: "******",
+        });
         try {
             const savedUser = await this.userService.create(newUser);
             this.logger.info("User has been registered: ", {

@@ -2,6 +2,7 @@ import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
 import app from "../../app.js";
 import request from "supertest";
 import { prisma } from "../../config/prisma.js";
+import { ROLES } from "../../constants/index.js";
 
 describe("POST /auth/register", () => {
     beforeAll(async () => {
@@ -84,6 +85,21 @@ describe("POST /auth/register", () => {
                 .send(userData);
             console.log(response.body);
             expect(response.body).toHaveProperty("id");
+        });
+
+        it("should assign correct role", async () => {
+            const userData = {
+                firstName: "Parshuram",
+                lastName: "Bagade",
+                email: "parshuram@gmail.com",
+                password: "Pass@123",
+            };
+
+            await request(app).post("/auth/register").send(userData);
+
+            const users = await prisma.user.findMany();
+            expect(users[0]).toHaveProperty("role");
+            expect(users[0].role).toBe(ROLES.CUSTOMER);
         });
     });
 
