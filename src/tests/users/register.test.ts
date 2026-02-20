@@ -3,6 +3,8 @@ import app from "../../app.js";
 import request from "supertest";
 import { prisma } from "../../config/prisma.js";
 import { ROLES } from "../../constants/index.js";
+import { UserService } from "../../services/UserService.js";
+import { PrismaClient } from "../../../generated/prisma/internal/class.js";
 
 describe("POST /auth/register", () => {
     beforeAll(async () => {
@@ -116,6 +118,25 @@ describe("POST /auth/register", () => {
             expect(users[0].password).not.toBe(userData.password);
             expect(users[0].password).toHaveLength(60);
             expect(users[0].password).toMatch(/\$2b\$\d+\$/); // hashed value starts with $2b$10$
+        });
+
+        it("should return 400 status code if email already exhists", async () => {
+            const userData = {
+                firstName: "Parshuram",
+                lastName: "Bagade",
+                email: "parshuram@gmail.com",
+                password: "Pass@123",
+            };
+            const userService = new UserService(prisma as PrismaClient);
+            await userService.create({ ...userData, role: ROLES.CUSTOMER });
+
+            const response = await request(app)
+                .post("/auth/register")
+                .send(userData);
+
+            const users = await prisma.user.findMany();
+            expect(response.statusCode).toBe(400);
+            expect(users).toHaveLength(1);
         });
     });
 
