@@ -140,5 +140,104 @@ describe("POST /auth/register", () => {
         });
     });
 
-    describe.skip("Some fields missing", () => {});
+    describe("Some fields missing", () => {
+        it("should return 400 status code if email is not present", async () => {
+            const userData = {
+                firstName: "Parshuram",
+                lastName: "Bagade",
+                email: "",
+                password: "Pass@123",
+            };
+
+            const response = await request(app)
+                .post("/auth/register")
+                .send(userData);
+
+            // const users = await prisma.user.findMany();
+            expect(response.statusCode).toBe(400);
+        });
+
+        it("should return 400 status code if firstName is not present", async () => {
+            const userData = {
+                firstName: "",
+                lastName: "Bagade",
+                email: "parshuram@gmail.com",
+                password: "Pass@123",
+            };
+
+            const response = await request(app)
+                .post("/auth/register")
+                .send(userData);
+
+            // const users = await prisma.user.findMany();
+            expect(response.statusCode).toBe(400);
+        });
+
+        it("should return 400 status code if lastName is not present", async () => {
+            const userData = {
+                firstName: "Parshuram",
+                lastName: "",
+                email: "parshuram@gmail.com",
+                password: "Pass@123",
+            };
+
+            const response = await request(app)
+                .post("/auth/register")
+                .send(userData);
+
+            // const users = await prisma.user.findMany();
+            expect(response.statusCode).toBe(400);
+        });
+
+        it("should return 400 status code if password is not present", async () => {
+            const userData = {
+                firstName: "Parshuram",
+                lastName: "Bagade",
+                email: "parshuram@gmail.com",
+                // password: "Pass@123",
+            };
+
+            const response = await request(app)
+                .post("/auth/register")
+                .send(userData);
+
+            // const users = await prisma.user.findMany();
+            expect(response.statusCode).toBe(400);
+        });
+    });
+
+    describe("Validation checks", () => {
+        it("should return 400 status code if password has less than 6 characters", async () => {
+            const userData = {
+                firstName: "Parshuram",
+                lastName: "Bagade",
+                email: "parshuram@gmail.com",
+                password: "Pass",
+            };
+
+            const response = await request(app)
+                .post("/auth/register")
+                .send(userData);
+
+            const users = await prisma.user.findMany();
+
+            expect(response.statusCode).toBe(400);
+            expect(users).toHaveLength(0);
+        });
+
+        it("should return 400 status code if email is not valid", async () => {
+            const userData = {
+                firstName: "Parshuram",
+                lastName: "Bagade",
+                email: "parshuramgmail.com",
+                password: "Pass@123",
+            };
+
+            const response = await request(app)
+                .post("/auth/register")
+                .send(userData);
+
+            expect(response.statusCode).toBe(400);
+        });
+    });
 });
