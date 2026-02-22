@@ -52,6 +52,23 @@ class AuthController {
             this.logger.info("User has been registered: ", {
                 id: savedUser?.id,
             });
+            const accessToken = "sdflsfksdnfosn";
+            const refreshToken = "sdfsdfsdfdsfsdf";
+
+            res.cookie("accessToken", accessToken, {
+                sameSite: "strict",
+                domain: "localhost",
+                httpOnly: true,
+                maxAge: 1000 * 60 * 60, // 1 hour
+            });
+
+            res.cookie("refreshToken", refreshToken, {
+                domain: "localhost",
+                sameSite: "strict",
+                httpOnly: true,
+                maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
+            });
+
             res.status(201).json({ id: savedUser?.id });
         } catch (err) {
             next(err);

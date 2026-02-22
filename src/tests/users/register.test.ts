@@ -5,6 +5,7 @@ import { prisma } from "../../config/prisma.js";
 import { ROLES } from "../../constants/index.js";
 import { UserService } from "../../services/UserService.js";
 import { PrismaClient } from "../../../generated/prisma/internal/class.js";
+import { isValidJWT } from "zod/v4/core";
 
 describe("POST /auth/register", () => {
     beforeAll(async () => {
@@ -137,6 +138,77 @@ describe("POST /auth/register", () => {
             const users = await prisma.user.findMany();
             expect(response.statusCode).toBe(400);
             expect(users).toHaveLength(1);
+        });
+
+        it("should set accessToken and refreshToken inside cookie", async () => {
+            const userData = {
+                firstName: "Parshuram",
+                lastName: "Bagade",
+                email: "parshuram@gmail.com",
+                password: "Pass@123",
+            };
+
+            const response = await request(app)
+                .post("/auth/register")
+                .send(userData);
+
+            interface Headers {
+                ["set-cookie"]: string[];
+            }
+
+            const cookies =
+                (response.headers as unknown as Headers)["set-cookie"] || [];
+            let accessToken = null,
+                refreshToken = null;
+
+            cookies.forEach((cookie) => {
+                if (cookie.startsWith("accessToken=")) {
+                    accessToken = cookie.split(";")[0].split("=")[1];
+                }
+
+                if (cookie.startsWith("refreshToken=")) {
+                    refreshToken = cookie.split(";")[0].split("=")[1];
+                }
+            });
+
+            expect(accessToken).not.toBeNull();
+            expect(refreshToken).not.toBeNull();
+        });
+
+        it("should set valid accessToken and refreshToken in cookie", async () => {
+            const userData = {
+                firstName: "Parshuram",
+                lastName: "Bagade",
+                email: "parshuram@gmail.com",
+                password: "Pass@123",
+            };
+
+            const response = await request(app)
+                .post("/auth/register")
+                .send(userData);
+
+            interface Headers {
+                ["set-cookie"]: string[];
+            }
+
+            const cookies =
+                (response.headers as unknown as Headers)["set-cookie"] || [];
+
+            let accessToken = "",
+                refreshToken = "";
+
+            cookies.forEach((cookie) => {
+                if (cookie.startsWith("accessToken=")) {
+                    accessToken = cookie.split(";")[0].split("=")[1];
+                }
+
+                if (cookie.startsWith("refreshToken=")) {
+                    refreshToken = cookie.split(";")[0].split("=")[1];
+                }
+            });
+
+            expect(isValidJWT(accessToken)).toBeTruthy();
+            expect(isValidJWT(refreshToken)).toBeTruthy();
         });
     });
 
