@@ -1,0 +1,6 @@
+certs
+*.pem
+.env*
+node_modules
+dist
+.git
