@@ -121,3 +121,7 @@ dist
 
 # End of https://mrkandreev.name/snippets/gitignore-generator/#Node
 /generated/prisma
+
+
+certs/
+*.pem

@@ -5,7 +5,11 @@ import { Logger } from "winston";
 import { ROLES } from "../constants";
 import bcrypt from "bcryptjs";
 import { RegisterSchema } from "../schemas";
-
+import fs from "fs";
+import path from "path";
+import jwt, { JwtPayload } from "jsonwebtoken";
+import createHttpError from "http-errors";
+import logger from "../config/logger";
 class AuthController {
     constructor(
         private userService: UserService,
@@ -52,7 +56,33 @@ class AuthController {
             this.logger.info("User has been registered: ", {
                 id: savedUser?.id,
             });
-            const accessToken = "sdflsfksdnfosn";
+
+            let privateKey;
+
+            try {
+                privateKey = fs.readFileSync(
+                    path.join(__dirname, "../../certs/private.pem"),
+                );
+            } catch (err) {
+                logger.error(err);
+                const error = createHttpError(
+                    500,
+                    "Error reading private key!",
+                );
+                next(error);
+                return;
+            }
+
+            const jwtPayload: JwtPayload = {
+                sub: String(savedUser.id),
+                role: savedUser.role,
+            };
+
+            const accessToken = jwt.sign(jwtPayload, privateKey, {
+                algorithm: "RS256",
+                expiresIn: "1h",
+                issuer: "auth-service",
+            });
             const refreshToken = "sdfsdfsdfdsfsdf";
 
             res.cookie("accessToken", accessToken, {
