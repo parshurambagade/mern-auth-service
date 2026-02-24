@@ -18,6 +18,7 @@ const {
     DB_PASSWORD,
     DB_NAME,
     DB_URL,
+    REFRESH_TOKEN_SECRET,
 } = process.env;
 
 export const ENV = {
@@ -29,4 +30,5 @@ export const ENV = {
     DB_PASSWORD,
     DB_NAME,
     DB_URL,
+    REFRESH_TOKEN_SECRET,
 };

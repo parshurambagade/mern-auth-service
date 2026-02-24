@@ -10,6 +10,7 @@ import path from "path";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import createHttpError from "http-errors";
 import logger from "../config/logger";
+import { ENV } from "../config/env";
 class AuthController {
     constructor(
         private userService: UserService,
@@ -83,7 +84,15 @@ class AuthController {
                 expiresIn: "1h",
                 issuer: "auth-service",
             });
-            const refreshToken = "sdfsdfsdfdsfsdf";
+            const refreshToken = jwt.sign(
+                jwtPayload,
+                ENV.REFRESH_TOKEN_SECRET!,
+                {
+                    expiresIn: "1y",
+                    algorithm: "HS256",
+                    issuer: "auth-service",
+                },
+            );
 
             res.cookie("accessToken", accessToken, {
                 sameSite: "strict",
