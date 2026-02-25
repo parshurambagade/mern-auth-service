@@ -6,7 +6,6 @@ import { ROLES } from "../constants";
 import bcrypt from "bcryptjs";
 import { RegisterSchema } from "../schemas";
 import { JwtPayload } from "jsonwebtoken";
-import { prisma } from "../config/prisma";
 import { TokenService } from "../services/TokenService";
 class AuthController {
     constructor(
@@ -64,15 +63,9 @@ class AuthController {
             const accessToken =
                 this.tokenService.generateAccessToken(jwtPayload);
 
-            const MS_IN_YEAR = 1000 * 60 * 60 * 24 * 365;
+            const savedRefreshToken =
+                await this.tokenService.persistRefreshToken(savedUser.id);
 
-            // store refresh token in db
-            const savedRefreshToken = await prisma.refreshToken.create({
-                data: {
-                    userId: savedUser.id,
-                    expiresAt: new Date(Date.now() + MS_IN_YEAR),
-                },
-            });
             const refreshToken = this.tokenService.generateRefreshToken({
                 ...jwtPayload,
                 id: String(savedRefreshToken.id),

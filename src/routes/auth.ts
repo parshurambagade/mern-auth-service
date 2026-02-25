@@ -8,7 +8,7 @@ import { TokenService } from "../services/TokenService.js";
 
 const authRouter = express.Router();
 const userService = new UserService(prisma as PrismaClient);
-const tokenService = new TokenService();
+const tokenService = new TokenService(prisma as PrismaClient);
 const authController = new AuthController(userService, tokenService, logger);
 
 authRouter.post("/register", async (req, res, next) =>
