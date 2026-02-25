@@ -5,15 +5,13 @@ import { Logger } from "winston";
 import { ROLES } from "../constants";
 import bcrypt from "bcryptjs";
 import { RegisterSchema } from "../schemas";
-import fs from "fs";
-import path from "path";
-import jwt, { JwtPayload } from "jsonwebtoken";
-import createHttpError from "http-errors";
-import logger from "../config/logger";
-import { ENV } from "../config/env";
+import { JwtPayload } from "jsonwebtoken";
+import { prisma } from "../config/prisma";
+import { TokenService } from "../services/TokenService";
 class AuthController {
     constructor(
         private userService: UserService,
+        private tokenService: TokenService,
         private logger: Logger,
     ) {}
 
@@ -58,41 +56,27 @@ class AuthController {
                 id: savedUser?.id,
             });
 
-            let privateKey;
-
-            try {
-                privateKey = fs.readFileSync(
-                    path.join(__dirname, "../../certs/private.pem"),
-                );
-            } catch (err) {
-                logger.error(err);
-                const error = createHttpError(
-                    500,
-                    "Error reading private key!",
-                );
-                next(error);
-                return;
-            }
-
             const jwtPayload: JwtPayload = {
                 sub: String(savedUser.id),
                 role: savedUser.role,
             };
 
-            const accessToken = jwt.sign(jwtPayload, privateKey, {
-                algorithm: "RS256",
-                expiresIn: "1h",
-                issuer: "auth-service",
-            });
-            const refreshToken = jwt.sign(
-                jwtPayload,
-                ENV.REFRESH_TOKEN_SECRET!,
-                {
-                    expiresIn: "1y",
-                    algorithm: "HS256",
-                    issuer: "auth-service",
+            const accessToken =
+                this.tokenService.generateAccessToken(jwtPayload);
+
+            const MS_IN_YEAR = 1000 * 60 * 60 * 24 * 365;
+
+            // store refresh token in db
+            const savedRefreshToken = await prisma.refreshToken.create({
+                data: {
+                    userId: savedUser.id,
+                    expiresAt: new Date(Date.now() + MS_IN_YEAR),
                 },
-            );
+            });
+            const refreshToken = this.tokenService.generateRefreshToken({
+                ...jwtPayload,
+                id: String(savedRefreshToken.id),
+            });
 
             res.cookie("accessToken", accessToken, {
                 sameSite: "strict",

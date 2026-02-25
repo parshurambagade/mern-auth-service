@@ -13,6 +13,7 @@ describe("POST /auth/register", () => {
     });
 
     beforeEach(async () => {
+        await prisma.refreshToken.deleteMany();
         await prisma.user.deleteMany();
     });
 
@@ -209,6 +210,27 @@ describe("POST /auth/register", () => {
 
             expect(isValidJWT(accessToken)).toBeTruthy();
             expect(isValidJWT(refreshToken)).toBeTruthy();
+        });
+
+        it("should persist the refresh token in db", async () => {
+            const userData = {
+                firstName: "Parshuram",
+                lastName: "Bagade",
+                email: "parshuram@gmail.com",
+                password: "Pass@123",
+            };
+
+            const response = await request(app)
+                .post("/auth/register")
+                .send(userData);
+
+            const refreshTokens = await prisma.refreshToken.findMany({
+                where: {
+                    userId: (response.body as Record<string, number>).id,
+                },
+            });
+
+            expect(refreshTokens).toHaveLength(1);
         });
     });
 

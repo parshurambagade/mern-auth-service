@@ -13,11 +13,21 @@ datasource db {
   provider = "postgresql"
 }
 
-model User { 
-  id    Int     @id @default(autoincrement()) 
-  firstName  String
-  lastName String
-  email String  @unique
-  password String
-  role String
-} 
+model User {
+  id            Int            @id @default(autoincrement())
+  firstName     String
+  lastName      String
+  email         String         @unique
+  password      String
+  role          String
+  refreshTokens RefreshToken[]
+}
+
+model RefreshToken {
+  id        Int      @id @default(autoincrement())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int // Foreign key connecting Post to User
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
